@@ -1,0 +1,52 @@
+﻿/* General styles */
+.border {
+    border-radius: 3px;
+}
+
+/* DatePicker */
+.date-picker {
+    display: inline-block;
+    background: white;
+}
+
+    .date-picker input {
+        border: none;
+        min-height: 20px;
+        min-width: 30px;
+        margin-inline-start: 3px;
+    }
+
+    .date-picker input:focus {
+        outline: none;
+    }
+
+    .date-picker .popup-btn{
+        display:inline-block;
+        height:100%;
+        padding: 5px 10px;
+        cursor:pointer;
+        transition: background-color linear 200ms;
+    }
+
+        .date-picker .popup-btn:hover {
+            background-color: #eee;
+        }
+
+        .date-picker .popup-btn:active {
+            background-color: #ccc;
+        }
+
+
+/* DataTable */
+.data-table thead {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.data-table th {
+    font-weight: 100;
+}
+
+.data-table th,td{
+    padding: 3px 5px;
+}

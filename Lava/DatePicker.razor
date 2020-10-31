@@ -1,0 +1,21 @@
+﻿@inject Microsoft.JSInterop.IJSRuntime js
+<div class="date-picker border">
+    <input id="@(dateInputId)"/>
+    <div class="popup-btn" @onclick="PopupClicked">
+        <i class="fas fa-calendar-alt"></i>
+    </div>
+</div>
+
+@code { 
+    private string dateInputId = $"dateInput-{new Random().Next(0, int.MaxValue)}";
+
+    private async void PopupClicked(MouseEventArgs e)
+    {
+        await Focus(dateInputId);
+    }
+
+    public async Task Focus(string elementId)
+    {
+        await js.InvokeAsync<string>("jsfunction.focusElement", new object[] { elementId });
+    }
+}
