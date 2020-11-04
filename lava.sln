@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lava.PlayGround", "Lava.PlayGround\Lava.PlayGround.csproj", "{9D59F087-509F-4237-AFD1-9FE4666DE8F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lava.PlayGround", "Lava.PlayGround\Lava.PlayGround.csproj", "{9D59F087-509F-4237-AFD1-9FE4666DE8F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lava", "Lava\Lava.csproj", "{2864A87D-C148-422B-8B7A-D0327E2CA748}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lava", "Lava\Lava.csproj", "{2864A87D-C148-422B-8B7A-D0327E2CA748}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

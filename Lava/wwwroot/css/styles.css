@@ -50,3 +50,25 @@
 .data-table th,td{
     padding: 3px 5px;
 }
+
+.collapsible{
+    border-width: 0;
+}
+
+    .collapsible .collapsible-header {
+        cursor: pointer;
+        padding: 5px;
+        background-color: unset;
+    }
+
+        .collapsible .collapsible-header .collapsible-header-text {
+            margin: 0px !important;
+        }
+
+        .collapsible .collapsible-header .collapsible-header-caret {
+            width: 15px;
+        }
+
+    .collapsible .collapsible-body {
+        padding-top: 5px;
+    }

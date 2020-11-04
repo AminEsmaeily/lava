@@ -1,0 +1,36 @@
+﻿<CascadingValue Value="this">
+    <div class="collapsible card">
+        <div class="collapsible-header card-header" data-toggle="collapse"
+             @onclick="e => IsExpanded = !IsExpanded">
+            @if (HeaderTemplate == null)
+            {
+                <h4 class="collapsible-header-text">
+                    <i class="fa fa-caret-@(IsExpanded ? "down" : "right") collapsible-header-caret"></i>
+                    @Header
+                </h4>
+            }
+            else
+            {
+                @HeaderTemplate
+            }
+        </div>
+        <div class="card-body collapsible-body @(IsExpanded ? "" : "collapse")">
+            <div class="row">
+                <div class="col" data-animation="fade">
+                    @ChildContent
+                </div>
+            </div>
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment HeaderTemplate { get; set; }
+    [Parameter]
+    public string Header { get; set; } = "Lava Collapsible";
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private bool IsExpanded { get; set; } = true;
+}
