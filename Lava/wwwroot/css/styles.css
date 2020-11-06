@@ -1,6 +1,6 @@
 ﻿/* General styles */
 .border {
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 /* DatePicker */
@@ -67,8 +67,88 @@
 
         .collapsible .collapsible-header .collapsible-header-caret {
             width: 15px;
+            transition-duration: 0.3s;
+            transition-property: transform;
         }
+
+            .collapsible .collapsible-header .collapsible-header-caret.collapsed {
+                transform: rotate(-90deg);
+                transform-origin: center center;
+                -webkit-transform: rotate(-90deg);
+                -webkit-transform-origin: center center;
+            }
 
     .collapsible .collapsible-body {
         padding-top: 5px;
+        transition: max-height linear 0.3s;
+        opacity: 1;
+        display:unset;
     }
+
+        .collapsible .collapsible-body.collapsed {
+            animation: collapse-content 0.5s normal;
+            -webkit-animation: collapse-content 0.5s normal;
+            animation-fill-mode:forwards;
+        }
+
+@-webkit-keyframes collapse-content {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        height:0;
+    }
+}
+
+.adroit-input{
+    background-color: #fff;
+    position:relative;
+    display:flex;
+}
+
+.adroit-input.has-placeholder{
+    margin-top:30px;
+}
+
+    .adroit-input-main {
+        border-radius: 5px;
+        padding: 3px 5px;
+        width:100%
+    }
+
+.adroit-input .placeholder {
+    position: absolute;
+    width: 100%;
+    opacity: 0.3;
+    top: 50%;
+    transform: translate(5px, -50%) scale(1, 1);
+    pointer-events: none;
+    transition: transform linear 0.2s, opacity linear 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+    .adroit-input .placeholder.active {
+        opacity: 1;
+        transform: translate(-10%, -160%) scale(0.8, 0.8);
+        pointer-events:all;
+    }
+
+.adroit-input .adroit-input-clear {
+    color: #d30000;
+    right: 20px;
+    top:3px;
+    position: relative;
+    cursor: pointer;
+    opacity: 0;
+    visibility:hidden;
+    transition: opacity linear, 0.2s;
+}
+
+.adroit-input .adroit-input-clear.active{
+    visibility:visible;
+    opacity: 1;
+}

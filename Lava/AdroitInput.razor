@@ -1,0 +1,81 @@
+﻿@inject Microsoft.JSInterop.IJSRuntime js
+
+<div class="adroit-input @(PlaceHolder == null ? "" : "has-placeholder")">
+    <input class="adroit-input-main border" 
+           id="@inputUniqueId"
+           type="@(IsPassword ? "password" : "text")"
+           @bind-value=Value @bind-value:event="oninput"
+           @onfocusin=@(() => ChangeFocus(true))
+           @onfocusout=@(() => ChangeFocus(false)) />
+
+    @if (PlaceHolder != null)
+    {
+        <div class="placeholder @(IsFocused || !string.IsNullOrEmpty(Value) ? "active" : "")">
+            @PlaceHolder
+        </div>
+    }
+
+    @if (HasClearButton)
+    {
+        <span class="adroit-input-clear @(string.IsNullOrEmpty(Value) ? "" : "active")" 
+              @onclick=ClearButtonClicked>✖</span>
+    }
+</div>
+
+@code{
+    private string inputUniqueId = $"input-{new Random().Next(0, int.MaxValue)}";
+
+    [Parameter]
+    public RenderFragment PlaceHolder { get; set; }
+
+    [Parameter]
+    public bool HasClearButton { get; set; } = true;
+
+    [Parameter]
+    public bool IsPassword { get; set; }
+
+    private string _value;
+    [Parameter]
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private bool _isFocused = false;
+    [Parameter]
+    public bool IsFocused
+    {
+        get => _isFocused;
+        set
+        {
+            if (_isFocused == value)
+                return;
+
+            if (value)
+                js.InvokeAsync<string>("jsfunction.focusElement", new object[] { inputUniqueId });
+            _isFocused = value;
+            IsFocusedChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<bool> IsFocusedChanged{ get; set; }
+
+    private void ChangeFocus(bool focused)
+    {
+        IsFocused = focused;
+    }
+
+    private void ClearButtonClicked()
+    {
+        Value = string.Empty;
+    }
+}

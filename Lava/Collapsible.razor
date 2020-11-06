@@ -1,11 +1,11 @@
 ﻿<CascadingValue Value="this">
     <div class="collapsible card">
         <div class="collapsible-header card-header" data-toggle="collapse"
-             @onclick="e => IsExpanded = !IsExpanded">
+             @onclick="e => Expanded = !Expanded">
             @if (HeaderTemplate == null)
             {
                 <h4 class="collapsible-header-text">
-                    <i class="fa fa-caret-@(IsExpanded ? "down" : "right") collapsible-header-caret"></i>
+                    <i class="fa fa-caret-down @(Expanded ? "" : "collapsed") collapsible-header-caret"></i>
                     @Header
                 </h4>
             }
@@ -14,7 +14,7 @@
                 @HeaderTemplate
             }
         </div>
-        <div class="card-body collapsible-body @(IsExpanded ? "" : "collapse")">
+        <div class="card-body collapsible-body @(Expanded ? "" : "collapsed")">
             <div class="row">
                 <div class="col" data-animation="fade">
                     @ChildContent
@@ -32,5 +32,18 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
-    private bool IsExpanded { get; set; } = true;
+    private bool _expanded = true;
+    [Parameter]
+    public bool Expanded
+    {
+        get => _expanded;
+        set
+        {
+            _expanded = value;
+            OnCollapsedChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> OnCollapsedChanged { get; set; }
 }
