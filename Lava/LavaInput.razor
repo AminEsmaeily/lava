@@ -1,0 +1,21 @@
+﻿@inherits LavaBaseInput
+
+<div class="lava-input @(PlaceHolder == null ? "" : "has-placeholder")">
+    <Lava.LavaBaseInput 
+                        @bind-IsFocused=IsFocused 
+                        @bind-Value=Value
+                        @bind-IsPassword=IsPassword
+                        @bind-HasClearButton=HasClearButton/>
+
+    @if (PlaceHolder != null)
+    {
+        <div class="placeholder @(IsFocused || !string.IsNullOrEmpty(Value) ? "active" : "")">
+            @PlaceHolder
+        </div>
+    }
+</div>
+
+@code{
+    [Parameter]
+    public RenderFragment PlaceHolder { get; set; }
+}

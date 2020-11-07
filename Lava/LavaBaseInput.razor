@@ -1,0 +1,85 @@
+﻿@inherits LavaBaseComponent
+@inject Microsoft.JSInterop.IJSRuntime js
+
+<div class="lava-base-input">
+    <input id="@inputUniqueId"
+           type="@(IsPassword ? "password" : "text")"
+           @bind-value=Value @bind-value:event="oninput"
+           @onfocusin=@(() => ChangeFocus(true))
+           @onfocusout=@(() => ChangeFocus(false)) />
+
+    @if (HasClearButton)
+    {
+        <span class="@(string.IsNullOrEmpty(Value) ? "" : "active")"
+              @onclick=ClearButtonClicked>✖</span>
+    }
+</div>
+
+@code{
+    private string inputUniqueId = $"input-{new Random().Next(0, int.MaxValue)}";
+
+    private bool _hasClearButton = true;
+    [Parameter]
+    public bool HasClearButton
+    {
+        get => _hasClearButton;
+        set
+        {
+            if (_hasClearButton == value)
+                return;
+
+            _hasClearButton = value;
+            HasClearButtonChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<bool> HasClearButtonChanged { get; set; }
+
+    private bool _isPassword = false;
+    [Parameter]
+    public bool IsPassword
+    {
+        get => _isPassword;
+        set
+        {
+            if (_isPassword == value)
+                return;
+            _isPassword = value;
+            IsPasswordChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<bool> IsPasswordChanged { get; set; }
+
+    private string _value;
+    [Parameter]
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private void ChangeFocus(bool focused)
+    {
+        IsFocused = focused;
+    }
+
+    private void ClearButtonClicked()
+    {
+        Value = string.Empty;
+    }
+
+    protected override void OnIsFocusedChanged()
+    {
+        if (IsFocused)
+            js.InvokeAsync<string>("jsfunction.focusElement", new object[] { inputUniqueId });
+    }
+}

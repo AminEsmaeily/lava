@@ -1,0 +1,23 @@
+﻿@inherits LavaBaseInput
+
+    <div class="lava-date-picker border @(PlaceHolder == null ? "" : "has-placeholder")">
+        <Lava.LavaBaseInput @bind-IsFocused=IsFocused
+                            @bind-Value=Value
+                            @bind-IsPassword=IsPassword
+                            @bind-HasClearButton=HasClearButton />
+        <div class="popup-btn">
+            <i class="fas fa-calendar-alt"></i>
+        </div>
+
+        @if (PlaceHolder != null)
+        {
+            <div class="placeholder @(IsFocused || !string.IsNullOrEmpty(Value) ? "active" : "")">
+                @PlaceHolder
+            </div>
+        }
+    </div>
+
+@code {
+    [Parameter]
+    public RenderFragment PlaceHolder { get; set; }
+}

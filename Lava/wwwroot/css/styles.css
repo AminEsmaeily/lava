@@ -1,56 +1,40 @@
 ﻿/* General styles */
 .border {
     border-radius: 5px;
+    border: 1px solid #ddd;
 }
 
-/* DatePicker */
-.date-picker {
-    display: inline-block;
+/*=====================DatePicker=====================*/
+.lava-date-picker {
+    display: flex;
     background: white;
 }
 
-    .date-picker input {
-        border: none;
-        min-height: 20px;
-        min-width: 30px;
-        margin-inline-start: 3px;
-    }
-
-    .date-picker input:focus {
-        outline: none;
-    }
-
-    .date-picker .popup-btn{
-        display:inline-block;
+    .lava-date-picker .popup-btn{
         height:100%;
         padding: 5px 10px;
         cursor:pointer;
         transition: background-color linear 200ms;
+        flex: 0 0 34px;
     }
 
-        .date-picker .popup-btn:hover {
+        .lava-date-picker .popup-btn:hover {
             background-color: #eee;
         }
 
-        .date-picker .popup-btn:active {
+        .lava-date-picker .popup-btn:active {
             background-color: #ccc;
         }
 
+    .lava-date-picker .lava-base-input {
+        flex: 1;
+    }
 
-/* DataTable */
-.data-table thead {
-    background-color: #4CAF50;
-    color: white;
-}
+    .lava-date-picker.has-placeholder {
+        margin-top: 30px;
+    }
 
-.data-table th {
-    font-weight: 100;
-}
-
-.data-table th,td{
-    padding: 3px 5px;
-}
-
+/*================Collapsible=================*/
 .collapsible{
     border-width: 0;
 }
@@ -102,27 +86,54 @@
     }
 }
 
-.adroit-input{
+/*====================LavaBaseInput===================*/
+.lava-base-input{
     background-color: #fff;
     position:relative;
     display:flex;
 }
 
-.adroit-input.has-placeholder{
-    margin-top:30px;
-}
-
-    .adroit-input-main {
-        border-radius: 5px;
+    .lava-base-input input[type=text], input[type=password] {
+        display: flex;
+        flex-shrink: 0;
         padding: 3px 5px;
-        width:100%
+        width: 100%;
+        border-width: 0;
     }
 
-.adroit-input .placeholder {
+    .lava-base-input span {
+        color: #d30000;
+        right: 20px;
+        top: 3px;
+        position: relative;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity linear, 0.2s;
+    }
+
+        .lava-base-input span.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+/*=================LavaInput====================*/
+.lava-input .lava-base-input {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.lava-input.has-placeholder {
+    padding-top: 30px;
+}
+
+/*================PlaceHolder==================*/
+/*.lava-input .placeholder {
     position: absolute;
     width: 100%;
     opacity: 0.3;
-    top: 50%;
+    top: 72%;
     transform: translate(5px, -50%) scale(1, 1);
     pointer-events: none;
     transition: transform linear 0.2s, opacity linear 0.2s;
@@ -131,24 +142,27 @@
     text-overflow: ellipsis;
 }
 
-    .adroit-input .placeholder.active {
+    .lava-input .placeholder.active {
         opacity: 1;
         transform: translate(-10%, -160%) scale(0.8, 0.8);
-        pointer-events:all;
+        pointer-events: all;
+    }*/
+
+.placeholder {
+    position: absolute;
+    width: 100%;
+    opacity: 0.3;
+    top: 72%;
+    transform: translate(5px, -50%) scale(1, 1);
+    pointer-events: none;
+    transition: transform linear 0.2s, opacity linear 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+    .placeholder.active {
+        opacity: 1;
+        transform: translate(-10%, -160%) scale(0.8, 0.8);
+        pointer-events: all;
     }
-
-.adroit-input .adroit-input-clear {
-    color: #d30000;
-    right: 20px;
-    top:3px;
-    position: relative;
-    cursor: pointer;
-    opacity: 0;
-    visibility:hidden;
-    transition: opacity linear, 0.2s;
-}
-
-.adroit-input .adroit-input-clear.active{
-    visibility:visible;
-    opacity: 1;
-}
