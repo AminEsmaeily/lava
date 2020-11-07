@@ -4,6 +4,56 @@
     border: 1px solid #ddd;
 }
 
+.clickable {
+    cursor: pointer;
+    transition: background-color linear 200ms;
+}
+
+    .clickable:hover {
+        background-color: #eee;
+    }
+
+    .clickable:active {
+        background-color: #ccc;
+    }
+
+.dropdown-menu{
+    padding:0 !important;
+}
+
+.lava-date-picker-header {
+    display: flex;
+    border-bottom:1px solid #ddd;
+}
+
+.lava-date-picker-prev-month,.lava-date-picker-prev-month {
+    flex: 0 0 35px;
+    height:35px;
+    padding:5px 10px;
+}
+
+.lava-date-picker-month-title{
+    flex:1;
+}
+
+.lava-date-picker-day-header-container{
+    display:flex;
+}
+
+.lava-date-picker-block {
+    width: 45px;
+    padding: 5px;
+    text-align:center;
+}
+
+.lava-date-picker-day-header{
+    font-size:x-small;
+    color:#888;
+}
+
+.lava-date-picker-day {
+    height:45px;
+}
 /*=====================DatePicker=====================*/
 .lava-date-picker {
     display: flex;
@@ -13,16 +63,10 @@
     .lava-date-picker .popup-btn{
         height:100%;
         padding: 5px 10px;
-        cursor:pointer;
-        transition: background-color linear 200ms;
         flex: 0 0 34px;
     }
 
-        .lava-date-picker .popup-btn:hover {
-            background-color: #eee;
-        }
-
-        .lava-date-picker .popup-btn:active {
+        .lava-date-picker .popup-btn.focused {
             background-color: #ccc;
         }
 
@@ -32,6 +76,14 @@
 
     .lava-date-picker.has-placeholder {
         margin-top: 30px;
+    }
+
+    .lava-date-picker .placeholder {
+        transform: translate(5px, -80%) scale(1, 1);
+    }
+
+    .lava-date-picker .placeholder.active {
+        transform: translate(-10%, -200%) scale(0.8, 0.8);
     }
 
 /*================Collapsible=================*/
@@ -129,25 +181,6 @@
 }
 
 /*================PlaceHolder==================*/
-/*.lava-input .placeholder {
-    position: absolute;
-    width: 100%;
-    opacity: 0.3;
-    top: 72%;
-    transform: translate(5px, -50%) scale(1, 1);
-    pointer-events: none;
-    transition: transform linear 0.2s, opacity linear 0.2s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-    .lava-input .placeholder.active {
-        opacity: 1;
-        transform: translate(-10%, -160%) scale(0.8, 0.8);
-        pointer-events: all;
-    }*/
-
 .placeholder {
     position: absolute;
     width: 100%;

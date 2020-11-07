@@ -1,23 +1,111 @@
 ﻿@inherits LavaBaseInput
 
-    <div class="lava-date-picker border @(PlaceHolder == null ? "" : "has-placeholder")">
-        <Lava.LavaBaseInput @bind-IsFocused=IsFocused
-                            @bind-Value=Value
-                            @bind-IsPassword=IsPassword
-                            @bind-HasClearButton=HasClearButton />
-        <div class="popup-btn">
-            <i class="fas fa-calendar-alt"></i>
-        </div>
-
-        @if (PlaceHolder != null)
+<div class="lava-date-picker border dropdown @(PlaceHolder == null ? "" : "has-placeholder")">
+    <Lava.LavaBaseInput @bind-IsFocused=IsFocused
+                        @bind-Value=Value
+                        @bind-IsPassword=IsPassword
+                        @bind-HasClearButton=HasClearButton />
+    <div class="popup-btn clickable @(IsDropdownOpen?"focused":"")"
+         @onclick=@(()=> { IsDropdownOpen = !IsDropdownOpen; })>
+        @if (Icon == null)
         {
-            <div class="placeholder @(IsFocused || !string.IsNullOrEmpty(Value) ? "active" : "")">
-                @PlaceHolder
-            </div>
+            <i class="fas fa-calendar-alt"></i>
+        }
+        else
+        {
+            @Icon
         }
     </div>
 
+    @if (PlaceHolder != null)
+    {
+        <div class="placeholder @(IsFocused || !string.IsNullOrEmpty(Value) ? "active" : "")">
+            @PlaceHolder
+        </div>
+    }
+
+    <div class="dropdown-menu @(IsDropdownOpen?"show" : "")">
+        <div class="lava-date-picker-header">
+            <div class="clickable lava-date-picker-prev-month">⯇</div>
+            <div class="clickable lava-date-picker-month-title lava-date-picker-block">
+                @($"{_currentDate:yyyy - MMMM} - {_currentDate}")
+            </div>
+            <div class="clickable lava-date-picker-prev-month">⯈</div>
+        </div>
+        <div class="lava-date-picker-day-header-container">
+            <div class="lava-date-picker-block lava-date-picker-day-header">Su</div>
+            <div class="lava-date-picker-block lava-date-picker-day-header">Mo</div>
+            <div class="lava-date-picker-block lava-date-picker-day-header">Tu</div>
+            <div class="lava-date-picker-block lava-date-picker-day-header">We</div>
+            <div class="lava-date-picker-block lava-date-picker-day-header">Th</div>
+            <div class="lava-date-picker-block lava-date-picker-day-header">Fr</div>
+            <div class="lava-date-picker-block lava-date-picker-day-header">Sa</div>
+        </div>
+        @{ 
+            DateTime startDate = _currentDate;
+            if (startDate == DateTime.MinValue)
+                startDate = DateTime.Now;
+            
+            startDate = startDate.AddDays(-1 * _currentDate.Day);
+            while (true)
+            {
+                <div class="lava-date-picker-day-header-container">
+                    @for(var i = 0; i < 7; i++)
+                    {
+                        <div class="clickable lava-date-picker-block lava-date-picker-day">@startDate.Day</div>
+                        startDate = startDate.AddDays(1);
+                    }
+                </div>
+                break;
+            }
+        }
+    </div>
+</div>
+
 @code {
+    private DateTime _currentDate;
+
     [Parameter]
     public RenderFragment PlaceHolder { get; set; }
+
+    [Parameter]
+    public RenderFragment Icon { get; set; }
+
+    private bool _isDropdownOpen = false;
+    [Parameter]
+    public bool IsDropdownOpen
+    {
+        get => _isDropdownOpen;
+        set
+        {
+            if (_isDropdownOpen == value)
+                return;
+
+            _isDropdownOpen = value;
+
+            if (value)
+                _currentDate = DateTime.Now;
+            IsDropdownOpenChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<bool> IsDropdownOpenChanged { get; set; }
+
+    private DateTime? _selectedDate;
+    [Parameter]
+    public DateTime? SelectedDate
+    {
+        get => _selectedDate;
+        set
+        {
+            if (_selectedDate == value)
+                return;
+
+            _selectedDate = value;
+            _currentDate = value.HasValue ? value.Value : DateTime.Now;
+            SelectedDateChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<DateTime?> SelectedDateChanged { get; set; }
 }
