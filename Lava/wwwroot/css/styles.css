@@ -6,62 +6,40 @@
 
 .clickable {
     cursor: pointer;
-    transition: background-color linear 200ms;
+    transition: background-color linear 200ms, opacity linear 100ms;
 }
 
     .clickable:hover {
-        background-color: #eee;
+        background-color: #ddd;
     }
 
-    .clickable:active {
+    .clickable:active, .clickable.active {
         background-color: #ccc;
+    }
+
+    .clickable.disabled{
+        opacity: 0.5;
+        cursor: default;
     }
 
 .dropdown-menu{
     padding:0 !important;
 }
 
-.lava-date-picker-header {
-    display: flex;
-    border-bottom:1px solid #ddd;
-}
+/*===============LavaDatePicker================*/
 
-.lava-date-picker-prev-month,.lava-date-picker-prev-month {
-    flex: 0 0 35px;
-    height:35px;
-    padding:5px 10px;
-}
-
-.lava-date-picker-month-title{
-    flex:1;
-}
-
-.lava-date-picker-day-header-container{
-    display:flex;
-}
-
-.lava-date-picker-block {
-    width: 45px;
-    padding: 5px;
-    text-align:center;
-}
-
-.lava-date-picker-day-header{
-    font-size:x-small;
-    color:#888;
-}
-
-.lava-date-picker-day {
-    height:45px;
-}
-/*=====================DatePicker=====================*/
 .lava-date-picker {
     display: flex;
     background: white;
+    transition: border linear 0.1s;
 }
 
-    .lava-date-picker .popup-btn{
-        height:100%;
+    .lava-date-picker.error {
+        border: 1px solid #ed0000 !important;
+    }
+
+    .lava-date-picker .popup-btn {
+        height: 100%;
         padding: 5px 10px;
         flex: 0 0 34px;
     }
@@ -82,8 +60,93 @@
         transform: translate(5px, -80%) scale(1, 1);
     }
 
-    .lava-date-picker .placeholder.active {
-        transform: translate(-10%, -200%) scale(0.8, 0.8);
+        .lava-date-picker .placeholder.active {
+            transform: translate(-10%, -200%) scale(0.8, 0.8);
+        }
+
+    .lava-date-picker .lava-base-input{
+        background:inherit;
+    }
+
+.lava-date-picker-header {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+}
+
+.lava-date-picker-today {
+    font-size: xx-small;
+    text-align: center;
+    width: 45px;
+    padding: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+    .lava-date-picker-today.hidden {
+        visibility: collapse;
+    }
+
+.lava-date-picker-prev-month, .lava-date-picker-prev-month {
+    flex: 0 0 35px;
+    padding: 5px 10px;
+}
+
+.lava-date-picker-month-title {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+}
+
+.lava-date-picker-day-header-container{
+    display:flex;
+    padding: 5px 0;
+}
+
+.lava-date-picker-week{
+    display: flex;
+    padding: 0 5px;
+}
+
+.lava-date-picker-block {
+    width: 50px;
+    text-align:center;
+    border-radius: 5px;
+}
+
+.lava-date-picker-day-header{
+    font-size:x-small;
+    color:#888;
+}
+
+.lava-date-picker-day {
+    height: 30px;
+    line-height: initial;
+    border-radius: 5px;
+    padding-top:3px;
+    margin-top:3px;
+    position:relative;
+}
+
+    .lava-date-picker-day.holiday {
+        color: rgba(255, 50, 10, 1);
+    }
+
+    .lava-date-picker-day.today {
+        color:rgb(50, 200, 14);
+    }
+
+    .lava-date-picker-day img{
+        position:absolute;
+        right:5px;
+        top: 0px;
+    }
+
+.lava-date-picker-other {
+    color: rgba(0, 0, 0, 0.5)
+}
+    .lava-date-picker-other.holiday {
+        color: rgba(255, 50, 10, 0.5);
     }
 
 /*================Collapsible=================*/
@@ -151,6 +214,7 @@
         padding: 3px 5px;
         width: 100%;
         border-width: 0;
+        background:inherit;
     }
 
     .lava-base-input span {
