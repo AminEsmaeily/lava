@@ -31,7 +31,7 @@
         <div class="lava-date-picker-header">
             <div class="clickable lava-date-picker-prev-month @(_canGoPrevious ? "" : "disabled")" @onclick="OnDecreaseClicked">◄</div>
             <div class="clickable lava-date-picker-today @(IsInCurrentViewPort() ? "hidden" : "")"
-                 @onclick=@(() => { CurrentDate = DateTime.Now; })>
+                 @onclick="OnTodayClicked">
                 @if(CurrentView == ViewMode.MonthView)
                 {
                     @_calendar.GetDayOfMonth(DateTime.Now)
@@ -49,7 +49,8 @@
                     @_calendar.GetYear(DateTime.Now)
                 }
             </div>
-            <div class="@(CurrentView != ViewMode.DecadeView ? "clickable" : "") lava-date-picker-month-title"
+            <div class="@(CurrentView != ViewMode.DecadeView ? "clickable" : "") lava-date-picker-month-title
+                 @(_daysAreVisible ? "" : "blured")"
                  @onclick="OnHeaderClicked">
                 @if (CurrentView == ViewMode.MonthView)
                 {
@@ -61,7 +62,7 @@
                 }
                 else if (CurrentView == ViewMode.DecadeView)
                 {
-                    var decadeStart = (_calendar.GetYear(CurrentDate) / DecadeViewYearsCount) * DecadeViewYearsCount;
+                    var decadeStart = GetDecadeStartYear();
                     <span>@($"{decadeStart} - {decadeStart + DecadeViewYearsCount - 1}")</span>
                 }
             </div>
@@ -83,26 +84,27 @@
                 }
             </div>
 
-                    DateTime startDate = CurrentDate;
-                    startDate = startDate.AddDays(-1 * (_calendar.GetDayOfMonth(startDate) - 1));
-                    int currentMonth = _calendar.GetMonth(startDate);
+            DateTime startDate = CurrentDate;
+            startDate = startDate.AddDays(-1 * (_calendar.GetDayOfMonth(startDate) - 1));
+            int currentMonth = _calendar.GetMonth(startDate);
 
-                    if (startDate.DayOfWeek == _weekStartDay)
-                        startDate = startDate.AddDays(-7);
-                    else
-                    {
-                        while (startDate.DayOfWeek != _weekStartDay)
-                            startDate = startDate.AddDays(-1);
-                    }
+            if (startDate.DayOfWeek == _weekStartDay)
+                startDate = startDate.AddDays(-7);
+            else
+            {
+                while (startDate.DayOfWeek != _weekStartDay)
+                    startDate = startDate.AddDays(-1);
+            }
 
-                    for (var week = 1; week <= 6; week++)
-                    {
+            for (var week = 1; week <= 6; week++)
+            {
                 <div class="lava-date-picker-week">
                     @for (var i = 0; i < 7; i++)
                     {
                         DateTime currentDate = startDate;
                         <div class="clickable lava-date-picker-block
-                                @(startDate.Date == SelectedDate?.Date ? "active" : "")"
+                                @(startDate.Date == SelectedDate?.Date ? "active" : "")
+                                @(_daysAreVisible ? "" : "blured")"
                                 @onclick=@(() => { DateSelected(currentDate); })>
                             <div class="lava-date-picker-day @(_calendar.GetMonth(startDate) != currentMonth ? "lava-date-picker-other" : "")
                                     @(startDate.Date == DateTime.Now.Date ? "today" : "")
@@ -118,48 +120,48 @@
                         startDate = startDate.AddDays(1);
                     }
                 </div>
-                        }
-                    }
-                    else if (CurrentView == ViewMode.YearView)
+            }
+        }
+        else if (CurrentView == ViewMode.YearView)
+        {
+            var date = new DateTime(_calendar.GetYear(CurrentDate), 1, 1, _calendar);
+            for (var season = 0; season < 4; season++)
+            {
+                <div class="lava-date-picker-season">
+                    @for (var month = 0; month < 3; month++)
                     {
-                        var date = new DateTime(_calendar.GetYear(CurrentDate), 1, 1, _calendar);
-                        for (var season = 0; season < 4; season++)
-                        {
-                            <div class="lava-date-picker-season">
-                                @for (var month = 0; month < 3; month++)
-                                {
-                                    var tmpDate = date;
-                                    <div class="clickable lava-date-picker-block lava-date-picker-month
-                                         @(_calendar.GetMonth(date) == _calendar.GetMonth(DateTime.Now) && _calendar.GetYear(date) == _calendar.GetYear(DateTime.Now) ? "current-month" : "")"
-                                         @onclick=@(() => OnMonthClicked(tmpDate))>
-                                        @GetMonthName(date)
-                                    </div>
-                                    date = _calendar.AddMonths(date, 1);
-                                }
-                            </div>
-                        }
+                        var tmpDate = date;
+                        <div class="clickable lava-date-picker-block lava-date-picker-month
+                                @(_calendar.GetMonth(date) == _calendar.GetMonth(DateTime.Now) && _calendar.GetYear(date) == _calendar.GetYear(DateTime.Now) ? "current-month" : "")"
+                                @onclick=@(() => OnMonthClicked(tmpDate))>
+                            @GetMonthName(date)
+                        </div>
+                        date = _calendar.AddMonths(date, 1);
                     }
-                    else if (CurrentView == ViewMode.DecadeView)
+                </div>
+            }
+        }
+        else if (CurrentView == ViewMode.DecadeView)
+        {
+            var currentYear = _calendar.GetYear(CurrentDate);
+            var startYear = GetDecadeStartYear();
+            var date = new DateTime(startYear, 1, 1, _calendar);
+            for (var i = 0; i < 3; i++)
+            {
+                <div class="lava-date-picker-season">
+                    @for (var j = 0; j < DecadeViewYearsCount / 3; j++)
                     {
-                        var currentYear = _calendar.GetYear(CurrentDate);
-                        var startYear = (currentYear / DecadeViewYearsCount) * DecadeViewYearsCount;
-                        var date = new DateTime(startYear, 1, 1, _calendar);
-                        for (var i = 0; i < 3; i++)
-                        {
-                            <div class="lava-date-picker-season">
-                                @for (var j = 0; j < DecadeViewYearsCount / 3; j++)
-                                {
-                                    var tmpDate = date;
-                                    <div class="clickable lava-date-picker-block lava-date-picker-month
-                                        @(_calendar.GetYear(date) == _calendar.GetYear(DateTime.Now) ? "current-month" : "")"
-                                         @onclick=@(() => OnYearClicked(tmpDate))>
-                                        @_calendar.GetYear(date)
-                                    </div>
-                                    date = _calendar.AddYears(date, 1);
-                                }
-                            </div>
-                        }
+                        var tmpDate = date;
+                        <div class="clickable lava-date-picker-block lava-date-picker-month
+                            @(_calendar.GetYear(date) == _calendar.GetYear(DateTime.Now) ? "current-month" : "")"
+                                @onclick=@(() => OnYearClicked(tmpDate))>
+                            @_calendar.GetYear(date)
+                        </div>
+                        date = _calendar.AddYears(date, 1);
                     }
+                </div>
+            }
+        }
     </div>
 </div>
 
@@ -199,6 +201,8 @@
     private bool _hasError = false;
     private bool _valueChangedInInternal = false;
     private ViewMode CurrentView = ViewMode.MonthView;
+
+    private bool _daysAreVisible = true;
 
     private string _value;
     public string Value
@@ -467,29 +471,47 @@
         CurrentView = ViewMode.YearView;
     }
 
-    private void OnDecreaseClicked()
+    private async Task OnDecreaseClicked()
     {
-        if (CurrentView == ViewMode.MonthView)
-            CurrentDate = _calendar.AddMonths(CurrentDate, -1);
-        else if (CurrentView == ViewMode.YearView)
-            CurrentDate = _calendar.AddYears(CurrentDate, -1);
-        else
+        try
         {
-            if (_calendar.GetYear(CurrentDate) - DecadeViewYearsCount < 0)
-                CurrentDate = _calendar.AddYears(CurrentDate, -1 * _calendar.GetYear(CurrentDate));
+            _daysAreVisible = false;
+            await Task.Delay(300);
+            if (CurrentView == ViewMode.MonthView)
+                CurrentDate = _calendar.AddMonths(CurrentDate, -1);
+            else if (CurrentView == ViewMode.YearView)
+                CurrentDate = _calendar.AddYears(CurrentDate, -1);
             else
                 CurrentDate = _calendar.AddYears(CurrentDate, -1 * DecadeViewYearsCount);
+
+            _daysAreVisible = true;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("An error occurred when decreasing the date." + Environment.NewLine + ex.Message);
+            CurrentDate = _calendar.MinSupportedDateTime;
         }
     }
 
-    private void OnIncreaseClicked()
+    private async Task OnIncreaseClicked()
     {
-        if (CurrentView == ViewMode.MonthView)
-            CurrentDate = _calendar.AddMonths(CurrentDate, 1);
-        else if (CurrentView == ViewMode.YearView)
-            CurrentDate = _calendar.AddYears(CurrentDate, 1);
-        else
-            CurrentDate = _calendar.AddYears(CurrentDate, DecadeViewYearsCount);
+        try
+        {
+            _daysAreVisible = false;
+            await Task.Delay(300);
+            if (CurrentView == ViewMode.MonthView)
+                CurrentDate = _calendar.AddMonths(CurrentDate, 1);
+            else if (CurrentView == ViewMode.YearView)
+                CurrentDate = _calendar.AddYears(CurrentDate, 1);
+            else
+                CurrentDate = _calendar.AddYears(CurrentDate, DecadeViewYearsCount);
+            _daysAreVisible = true;
+        }
+        catch(Exception ex)
+        {
+            Console.Error.WriteLine("An error occurred when increasing the date." + Environment.NewLine + ex.Message);
+            CurrentDate = _calendar.MinSupportedDateTime;
+        }
     }
 
     private bool IsInCurrentViewPort()
@@ -503,5 +525,24 @@
             var startYear = (_calendar.GetYear(DateTime.Now) / DecadeViewYearsCount) * DecadeViewYearsCount;
             return _calendar.GetYear(CurrentDate) >= startYear && _calendar.GetYear(CurrentDate) <= startYear + DecadeViewYearsCount;
         }
+    }
+
+    private int GetDecadeStartYear()
+    {
+        var decadeStart = (_calendar.GetYear(CurrentDate) / DecadeViewYearsCount) * DecadeViewYearsCount;
+        if (decadeStart < _calendar.GetYear(_calendar.MinSupportedDateTime))
+            decadeStart = _calendar.GetYear(_calendar.MinSupportedDateTime);
+        else if (decadeStart + DecadeViewYearsCount > _calendar.GetYear(_calendar.MaxSupportedDateTime))
+            decadeStart = _calendar.GetYear(_calendar.MaxSupportedDateTime) - DecadeViewYearsCount;
+
+        return decadeStart;
+    }
+
+    private async Task OnTodayClicked()
+    {
+        _daysAreVisible = false;
+        await Task.Delay(300);
+        CurrentDate = DateTime.Now;
+        _daysAreVisible = true;
     }
 }
