@@ -71,6 +71,7 @@
 .lava-date-picker-header {
     display: flex;
     border-bottom: 1px solid #ddd;
+    min-width: 300px;
 }
 
 .lava-date-picker-today {
@@ -103,7 +104,7 @@
     padding: 5px 0;
 }
 
-.lava-date-picker-week{
+.lava-date-picker-week, .lava-date-picker-season{
     display: flex;
     padding: 0 5px;
 }
@@ -147,6 +148,20 @@
 }
     .lava-date-picker-other.holiday {
         color: rgba(255, 50, 10, 0.5);
+    }
+
+.lava-date-picker-month {
+    height: 40px;
+    line-height: initial;
+    border-radius: 5px;
+    padding: 10px 5px;
+    margin-top: 3px;
+    position: relative;
+    flex: 1;
+}
+
+    .lava-date-picker-month.current-month {
+        background: #32a852;
     }
 
 /*================Collapsible=================*/
