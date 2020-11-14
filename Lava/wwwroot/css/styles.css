@@ -1,56 +1,187 @@
 ﻿/* General styles */
 .border {
     border-radius: 5px;
+    border: 1px solid #ddd;
 }
 
-/* DatePicker */
-.date-picker {
-    display: inline-block;
+.clickable {
+    cursor: pointer;
+    transition: background-color linear 0.5s, opacity linear 100ms;
+}
+
+    .clickable:hover {
+        background-color: #ddd;
+    }
+
+    .clickable:active, .clickable.active {
+        background-color: #ccc;
+    }
+
+    .clickable.disabled{
+        opacity: 0.5;
+        cursor: default;
+    }
+
+.dropdown-menu{
+    padding:0 !important;
+}
+
+/*===============LavaDatePicker================*/
+
+.lava-date-picker {
+    display: flex;
     background: white;
+    transition: border linear 0.1s;
 }
 
-    .date-picker input {
-        border: none;
-        min-height: 20px;
-        min-width: 30px;
-        margin-inline-start: 3px;
+    .lava-date-picker.error {
+        border: 1px solid #ed0000 !important;
     }
 
-    .date-picker input:focus {
-        outline: none;
-    }
-
-    .date-picker .popup-btn{
-        display:inline-block;
-        height:100%;
+    .lava-date-picker .popup-btn {
+        height: 100%;
         padding: 5px 10px;
-        cursor:pointer;
-        transition: background-color linear 200ms;
+        flex: 0 0 34px;
     }
 
-        .date-picker .popup-btn:hover {
-            background-color: #eee;
-        }
-
-        .date-picker .popup-btn:active {
+        .lava-date-picker .popup-btn.focused {
             background-color: #ccc;
         }
 
+    .lava-date-picker .lava-base-input {
+        flex: 1;
+    }
 
-/* DataTable */
-.data-table thead {
-    background-color: #4CAF50;
-    color: white;
+    .lava-date-picker.has-placeholder {
+        margin-top: 30px;
+    }
+
+    .lava-date-picker .placeholder {
+        transform: translate(5px, -80%) scale(1, 1);
+    }
+
+        .lava-date-picker .placeholder.active {
+            transform: translate(-10%, -200%) scale(0.8, 0.8);
+        }
+
+    .lava-date-picker .lava-base-input{
+        background:inherit;
+    }
+
+.lava-date-picker-header {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    min-width: 300px;
 }
 
-.data-table th {
-    font-weight: 100;
+.lava-date-picker-today {
+    font-size: xx-small;
+    text-align: center;
+    width: 45px;
+    padding: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: width linear 0.2s, opacity linear 0.2ms;
 }
 
-.data-table th,td{
-    padding: 3px 5px;
+    .lava-date-picker-today.hidden {
+        width: 0;
+        opacity: 0;
+    }
+
+.lava-date-picker-prev-month, .lava-date-picker-prev-month {
+    flex: 0 0 35px;
+    padding: 5px 10px;
 }
 
+.lava-date-picker-month-title {
+    flex: 1;
+    text-align: center;
+    padding: 5px;
+    opacity: 1;
+    transition: opacity linear 0.2s;
+}
+
+    .lava-date-picker-month-title.blured {
+        opacity: 0;
+    }
+
+.lava-date-picker-day-header-container {
+    display: flex;
+    padding: 5px 0;
+}
+
+.lava-date-picker-week, .lava-date-picker-season{
+    display: flex;
+    padding: 0 5px;
+}
+
+.lava-date-picker-block {
+    width: 50px;
+    text-align: center;
+    border-radius: 5px;
+    transition: transform 0.2s;
+    transform-style: preserve-3d;
+}
+
+    .lava-date-picker-block.blured {
+        transform: rotateY(90deg);
+    }
+
+.lava-date-picker-day-header {
+    font-size: x-small;
+    color: #888;
+}
+
+.lava-date-picker-day {
+    height: 30px;
+    line-height: initial;
+    border-radius: 5px;
+    padding-top: 3px;
+    margin-top: 3px;
+    position: relative;
+    color: #555555;
+    transition: color ease-in 0.4s;
+}
+
+    .lava-date-picker-day.holiday {
+        color: rgb(255, 50, 10);
+    }
+
+    .lava-date-picker-day.today {
+        color:rgb(50, 200, 14);
+    }
+
+    .lava-date-picker-day img{
+        position:absolute;
+        right:5px;
+        top: 0px;
+    }
+
+.lava-date-picker-other {
+    color: rgba(0, 0, 0, 0.5)
+}
+    .lava-date-picker-other.holiday {
+        color: rgba(255, 50, 10, 0.5);
+    }
+
+.lava-date-picker-month {
+    height: 40px;
+    line-height: initial;
+    border-radius: 5px;
+    padding: 10px 5px;
+    margin-top: 3px;
+    position: relative;
+    flex: 1;
+    transition: background linear 0.2s;
+}
+
+    .lava-date-picker-month.current-month {
+        background: #32a852;
+    }
+
+/*================Collapsible=================*/
 .collapsible{
     border-width: 0;
 }
@@ -102,27 +233,55 @@
     }
 }
 
-.adroit-input{
+/*====================LavaBaseInput===================*/
+.lava-base-input{
     background-color: #fff;
     position:relative;
     display:flex;
 }
 
-.adroit-input.has-placeholder{
-    margin-top:30px;
-}
-
-    .adroit-input-main {
-        border-radius: 5px;
+    .lava-base-input input[type=text], input[type=password] {
+        display: flex;
+        flex-shrink: 0;
         padding: 3px 5px;
-        width:100%
+        width: 100%;
+        border-width: 0;
+        background:inherit;
     }
 
-.adroit-input .placeholder {
+    .lava-base-input span {
+        color: #d30000;
+        right: 20px;
+        top: 3px;
+        position: relative;
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity linear, 0.2s;
+    }
+
+        .lava-base-input span.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+/*=================LavaInput====================*/
+.lava-input .lava-base-input {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.lava-input.has-placeholder {
+    padding-top: 30px;
+}
+
+/*================PlaceHolder==================*/
+.placeholder {
     position: absolute;
     width: 100%;
     opacity: 0.3;
-    top: 50%;
+    top: 72%;
     transform: translate(5px, -50%) scale(1, 1);
     pointer-events: none;
     transition: transform linear 0.2s, opacity linear 0.2s;
@@ -131,24 +290,8 @@
     text-overflow: ellipsis;
 }
 
-    .adroit-input .placeholder.active {
+    .placeholder.active {
         opacity: 1;
         transform: translate(-10%, -160%) scale(0.8, 0.8);
-        pointer-events:all;
+        pointer-events: all;
     }
-
-.adroit-input .adroit-input-clear {
-    color: #d30000;
-    right: 20px;
-    top:3px;
-    position: relative;
-    cursor: pointer;
-    opacity: 0;
-    visibility:hidden;
-    transition: opacity linear, 0.2s;
-}
-
-.adroit-input .adroit-input-clear.active{
-    visibility:visible;
-    opacity: 1;
-}

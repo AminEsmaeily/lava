@@ -1,0 +1,548 @@
+﻿@inherits LavaBaseComponent
+@using Nager.Date.Extensions
+@using System.Globalization
+
+<div class="lava-date-picker border dropdown @(PlaceHolder == null ? "" : "has-placeholder") @(_hasError ? "error" : "")" 
+     aria-haspopup="true" aria-expanded="false">
+    <Lava.LavaBaseInput @bind-IsFocused=IsFocused
+                        @bind-Value=Value
+                        IsPassword=false
+                        HasClearButton=true/>
+    <div class="popup-btn clickable @(IsDropdownOpen ? "focused" : "")"
+         @onclick=@(() => { IsDropdownOpen = !IsDropdownOpen; })>
+        @if (Icon == null)
+        {
+            <i class="fas fa-calendar-alt"></i>
+        }
+        else
+        {
+            @Icon
+        }
+    </div>
+
+    @if (PlaceHolder != null)
+    {
+        <div class="placeholder @(IsFocused || !string.IsNullOrEmpty(Value) ? "active" : "")">
+            @PlaceHolder
+        </div>
+    }
+
+    <div class="dropdown-menu @(IsDropdownOpen ? "show" : "")">
+        <div class="lava-date-picker-header">
+            <div class="clickable lava-date-picker-prev-month @(_canGoPrevious ? "" : "disabled")" @onclick="OnDecreaseClicked">◄</div>
+            <div class="clickable lava-date-picker-today @(IsInCurrentViewPort() ? "hidden" : "")"
+                 @onclick="OnTodayClicked">
+                @if(CurrentView == ViewMode.MonthView)
+                {
+                    @_calendar.GetDayOfMonth(DateTime.Now)
+                    <br />
+                    @GetMonthName(DateTime.Now)
+                }
+                else if (CurrentView == ViewMode.YearView)
+                {
+                    @_calendar.GetYear(DateTime.Now)
+                    <br />
+                    @GetMonthName(DateTime.Now)
+                }
+                else
+                {
+                    @_calendar.GetYear(DateTime.Now)
+                }
+            </div>
+            <div class="@(CurrentView != ViewMode.DecadeView ? "clickable" : "") lava-date-picker-month-title
+                 @(_daysAreVisible ? "" : "blured")"
+                 @onclick="OnHeaderClicked">
+                @if (CurrentView == ViewMode.MonthView)
+                {
+                    <span>@($"{_calendar.GetYear(CurrentDate)} - {GetMonthName(CurrentDate)}")</span>
+                }
+                else if (CurrentView == ViewMode.YearView)
+                {
+                    <span>@($"{_calendar.GetYear(CurrentDate)}")</span>
+                }
+                else if (CurrentView == ViewMode.DecadeView)
+                {
+                    var decadeStart = GetDecadeStartYear();
+                    <span>@($"{decadeStart} - {decadeStart + DecadeViewYearsCount - 1}")</span>
+                }
+            </div>
+            <div class="clickable lava-date-picker-prev-month" @onclick="OnIncreaseClicked">►</div>
+        </div>
+
+        @if (CurrentView == ViewMode.MonthView)
+        {
+            <div class="lava-date-picker-day-header-container">
+                @{
+                    int weekIndex = (int)_weekStartDay;
+                    for (var i = 0; i < 7; i++)
+                    {
+                        <div class="lava-date-picker-block lava-date-picker-day-header">@GetDayOfWeekName(weekIndex)</div>
+                        weekIndex++;
+                        if (weekIndex > 6)
+                            weekIndex = 0;
+                    }
+                }
+            </div>
+
+            DateTime startDate = CurrentDate;
+            startDate = startDate.AddDays(-1 * (_calendar.GetDayOfMonth(startDate) - 1));
+            int currentMonth = _calendar.GetMonth(startDate);
+
+            if (startDate.DayOfWeek == _weekStartDay)
+                startDate = startDate.AddDays(-7);
+            else
+            {
+                while (startDate.DayOfWeek != _weekStartDay)
+                    startDate = startDate.AddDays(-1);
+            }
+
+            for (var week = 1; week <= 6; week++)
+            {
+                <div class="lava-date-picker-week">
+                    @for (var i = 0; i < 7; i++)
+                    {
+                        DateTime currentDate = startDate;
+                        <div class="clickable lava-date-picker-block
+                                @(startDate.Date == SelectedDate?.Date ? "active" : "")
+                                @(_daysAreVisible ? "" : "blured")"
+                                @onclick=@(() => { DateSelected(currentDate); })>
+                            <div class="lava-date-picker-day @(_calendar.GetMonth(startDate) != currentMonth ? "lava-date-picker-other" : "")
+                                    @(startDate.Date == DateTime.Now.Date ? "today" : "")
+                                    @(startDate.IsWeekend(_countryCode) || _holidays.Any(f => f.Date == startDate.Date) ? "holiday" : "")">
+
+                                @if (_holidays.Any(f => f.Date == startDate.Date))
+                                {
+                                    <img src="/_content/lava/res/tag.png" height="10" width="10" />
+                                }
+                                @_calendar.GetDayOfMonth(startDate)
+                            </div>
+                        </div>
+                        startDate = startDate.AddDays(1);
+                    }
+                </div>
+            }
+        }
+        else if (CurrentView == ViewMode.YearView)
+        {
+            var date = new DateTime(_calendar.GetYear(CurrentDate), 1, 1, _calendar);
+            for (var season = 0; season < 4; season++)
+            {
+                <div class="lava-date-picker-season">
+                    @for (var month = 0; month < 3; month++)
+                    {
+                        var tmpDate = date;
+                        <div class="clickable lava-date-picker-block lava-date-picker-month
+                                @(_calendar.GetMonth(date) == _calendar.GetMonth(DateTime.Now) && _calendar.GetYear(date) == _calendar.GetYear(DateTime.Now) ? "current-month" : "")"
+                                @onclick=@(() => OnMonthClicked(tmpDate))>
+                            @GetMonthName(date)
+                        </div>
+                        date = _calendar.AddMonths(date, 1);
+                    }
+                </div>
+            }
+        }
+        else if (CurrentView == ViewMode.DecadeView)
+        {
+            var currentYear = _calendar.GetYear(CurrentDate);
+            var startYear = GetDecadeStartYear();
+            var date = new DateTime(startYear, 1, 1, _calendar);
+            for (var i = 0; i < 3; i++)
+            {
+                <div class="lava-date-picker-season">
+                    @for (var j = 0; j < DecadeViewYearsCount / 3; j++)
+                    {
+                        var tmpDate = date;
+                        <div class="clickable lava-date-picker-block lava-date-picker-month
+                            @(_calendar.GetYear(date) == _calendar.GetYear(DateTime.Now) ? "current-month" : "")"
+                                @onclick=@(() => OnYearClicked(tmpDate))>
+                            @_calendar.GetYear(date)
+                        </div>
+                        date = _calendar.AddYears(date, 1);
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private enum ViewMode
+    {
+        MonthView,
+        YearView,
+        DecadeView
+    }
+
+    private const int DecadeViewYearsCount = 12;
+
+    private DateTime _currentDate;
+    private DateTime CurrentDate
+    {
+        get
+        {
+            if (_currentDate == DateTime.MinValue)
+                return DateTime.Now;
+            return _currentDate;
+        }
+        set
+        {
+            if (_currentDate == value)
+                return;
+            _currentDate = value;
+            _canGoPrevious = _currentDate.Year >= 1000;
+            _holidays = Nager.Date.DateSystem.GetPublicHoliday(value.Year, CountryCode);
+        }
+    }
+
+    private DayOfWeek _weekStartDay = DayOfWeek.Monday;
+    private IEnumerable<Nager.Date.Model.PublicHoliday> _holidays = new List<Nager.Date.Model.PublicHoliday>();
+    private Calendar _calendar = new GregorianCalendar();
+    private bool _canGoPrevious = true;
+    private bool _hasError = false;
+    private bool _valueChangedInInternal = false;
+    private ViewMode CurrentView = ViewMode.MonthView;
+
+    private bool _daysAreVisible = true;
+
+    private string _value;
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+            _value = value;
+
+            if (!_valueChangedInInternal)
+            {
+                _hasError = false;
+                if (string.IsNullOrEmpty(value))
+                    SelectedDate = null;
+                else
+                {
+                    try
+                    {
+                        char separator = ' ';
+                        if (value.Contains('/'))
+                            separator = '/';
+                        else if (value.Contains('-'))
+                            separator = '-';
+
+                        if(separator == ' ')
+                        {
+                            _hasError = true;
+                            return;
+                        }
+
+                        var parts = value.Split(separator);
+                        if(parts.Length != 3)
+                        {
+                            _hasError = true;
+                            return;
+                        }
+
+                        var year = Convert.ToInt32(parts[0]);
+                        var part2 = Convert.ToInt32(parts[1]);
+                        var part3 = Convert.ToInt32(parts[2]);
+
+                        var month = part2 > 12 ? part3 : part2;
+                        var day = part2 > 12 ? part2 : part3;
+
+                        SelectedDate = new DateTime(year, month, day, _calendar);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.Error.WriteLine("Invalid input found.", ex);
+                        _hasError = true;
+                        _valueChangedInInternal = true;
+                        SelectedDate = null;
+                        _valueChangedInInternal = false;
+                    }
+                }
+            }
+        }
+    }
+
+    [Parameter]
+    public RenderFragment PlaceHolder { get; set; }
+
+    [Parameter]
+    public RenderFragment Icon { get; set; }
+
+    private bool _isDropdownOpen = false;
+    [Parameter]
+    public bool IsDropdownOpen
+    {
+        get => _isDropdownOpen;
+        set
+        {
+            if (_isDropdownOpen == value)
+                return;
+
+            _isDropdownOpen = value;
+
+            if (value)
+                CurrentDate = SelectedDate.HasValue ? SelectedDate.Value : DateTime.Now;
+            IsDropdownOpenChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<bool> IsDropdownOpenChanged { get; set; }
+
+    private DateTime? _selectedDate;
+    [Parameter]
+    public DateTime? SelectedDate
+    {
+        get => _selectedDate;
+        set
+        {
+            if (_selectedDate == value)
+                return;
+
+            _selectedDate = value;
+            CurrentDate = value.HasValue ? value.Value : DateTime.Now;
+            SetDisplayedValue();
+            SelectedDateChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter]
+    public EventCallback<DateTime?> SelectedDateChanged { get; set; }
+
+    private Nager.Date.CountryCode _countryCode = Nager.Date.CountryCode.US;
+    [Parameter]
+    public Nager.Date.CountryCode CountryCode
+    {
+        get => _countryCode;
+        set
+        {
+            if (value == _countryCode)
+                return;
+            _countryCode = value;
+            if (IsPersianCalendar())
+                _calendar = new PersianCalendar();
+            else if (IsArabicCalendar())
+                _calendar = new UmAlQuraCalendar();
+            else if (IsJapaneseCalendar())
+                _calendar = new JapaneseCalendar();
+            else if (IsChineseCalendar())
+                _calendar = new ChineseLunisolarCalendar();
+            else
+                _calendar = new GregorianCalendar();
+
+            CalculateWeekStartDay();
+        }
+    }
+
+    [Parameter]
+    public bool CloseWhenSelected { get; set; } = true;
+
+    private bool IsArabicCalendar() => CountryCode == Nager.Date.CountryCode.IQ ||
+            CountryCode == Nager.Date.CountryCode.QA ||
+            CountryCode == Nager.Date.CountryCode.OM ||
+            CountryCode == Nager.Date.CountryCode.AE ||
+            CountryCode == Nager.Date.CountryCode.SA ||
+            CountryCode == Nager.Date.CountryCode.UA;
+
+    private void DateSelected(DateTime date)
+    {
+        SelectedDate = date;
+        if (CloseWhenSelected)
+            IsDropdownOpen = false;
+    }
+
+    private bool IsPersianCalendar() => CountryCode == Nager.Date.CountryCode.IR;
+
+    public bool IsTurkishCalendar() => CountryCode == Nager.Date.CountryCode.TR;
+
+    public bool IsGermanCalendar() => CountryCode == Nager.Date.CountryCode.DE;
+
+    public bool IsJapaneseCalendar() => CountryCode == Nager.Date.CountryCode.JP;
+
+    public bool IsChineseCalendar() => CountryCode == Nager.Date.CountryCode.CN;
+
+    public bool IsRussianCalenar() => CountryCode == Nager.Date.CountryCode.RU;
+
+    private void CalculateWeekStartDay()
+    {
+        var date = DateTime.Now;
+        bool forwardSearch = false;
+        while (date.IsWeekend(CountryCode))
+        {
+            forwardSearch = true;
+            date = date.AddDays(1);
+        }
+
+        if (forwardSearch)
+        {
+            _weekStartDay = date.DayOfWeek;
+            return;
+        }
+
+        while (!date.IsWeekend(CountryCode))
+            date = date.AddDays(-1);
+
+        date = date.AddDays(1);
+        _weekStartDay = date.DayOfWeek;
+    }
+
+    private string GetDayOfWeekName(int dayOfWeek)
+    {
+        var gregNames = new string[] { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" };
+        var perNames = new string[] { "ی", "د", "س", "چ", "پ", "ج", "ش" };
+        var turkNames = new string[] { "Pr", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct" };
+        var germanNames = new string[] { "So", "Mo", "Di", "Mi", "Do", "Fr", "Sa" };
+        var japanNames = new string[] { "Ni", "Ge", "Ka", "Su", "Mo", "Ki", "Do" };
+        var chinNames = new string[] { "Ni", "yī", "èr", "sān", "sì", "wǔ", "rì" };
+        var rusNames = new string[] { "во", "по", "вт", "ср", "че", "пя", "су" };
+
+        if (IsPersianCalendar() || IsArabicCalendar())
+            return perNames[dayOfWeek];
+        else if (IsTurkishCalendar())
+            return turkNames[dayOfWeek];
+        else if (IsGermanCalendar())
+            return germanNames[dayOfWeek];
+        else if (IsJapaneseCalendar())
+            return japanNames[dayOfWeek];
+        else if (IsChineseCalendar())
+            return chinNames[dayOfWeek];
+        else if (IsRussianCalenar())
+            return rusNames[dayOfWeek];
+        else
+            return gregNames[dayOfWeek];
+    }
+
+    private string GetMonthName(DateTime date)
+    {
+        var perMonths = new string[] { "فررودین", "اردیبهشت", "خرداد", "تیر‏", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند" };
+        var gregNames = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        var hijriNames = new string[] { "محرّم", "صفر", "ربیع الاوّل", "ربیع الثانی", "جمادی الاوّل", "جمادی الثانی", "رجب", "شعبان", "رمضان", "شوّال", "ذوالقعدة", "ذوالحجة" };
+        var turkNames = new string[] { "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık" };
+        var germanNames = new string[] { "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember" };
+        var japanNames = new string[] { "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月" };
+        var rusNames = new string[] { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
+
+        var month = _calendar.GetMonth(date) - 1;
+        if (IsPersianCalendar())
+            return perMonths[month];
+        else if (IsArabicCalendar())
+            return hijriNames[month];
+        else if (IsTurkishCalendar())
+            return turkNames[month];
+        else if (IsGermanCalendar())
+            return germanNames[month];
+        else if (IsJapaneseCalendar() || IsChineseCalendar())
+            return japanNames[month];
+        else if (IsRussianCalenar())
+            return rusNames[month];
+        else
+            return gregNames[month];
+    }
+
+    private void SetDisplayedValue()
+    {
+        if (_valueChangedInInternal)
+            return;
+
+        var selectedDate = SelectedDate;
+        _valueChangedInInternal = true;
+        Value = selectedDate.HasValue ?
+            $"{_calendar.GetYear(selectedDate.Value)}/{_calendar.GetMonth(selectedDate.Value):00}/{_calendar.GetDayOfMonth(selectedDate.Value):00}" : "";
+        _valueChangedInInternal = false;
+    }
+
+    private void OnHeaderClicked()
+    {
+        if (CurrentView == ViewMode.MonthView)
+            CurrentView = ViewMode.YearView;
+        else if (CurrentView == ViewMode.YearView)
+            CurrentView = ViewMode.DecadeView;
+    }
+
+    private void OnMonthClicked(DateTime selectedDate)
+    {
+        CurrentDate = selectedDate;
+        CurrentView = ViewMode.MonthView;
+    }
+
+    private void OnYearClicked(DateTime selectedDate)
+    {
+        CurrentDate = selectedDate;
+        CurrentView = ViewMode.YearView;
+    }
+
+    private async Task OnDecreaseClicked()
+    {
+        try
+        {
+            _daysAreVisible = false;
+            await Task.Delay(300);
+            if (CurrentView == ViewMode.MonthView)
+                CurrentDate = _calendar.AddMonths(CurrentDate, -1);
+            else if (CurrentView == ViewMode.YearView)
+                CurrentDate = _calendar.AddYears(CurrentDate, -1);
+            else
+                CurrentDate = _calendar.AddYears(CurrentDate, -1 * DecadeViewYearsCount);
+
+            _daysAreVisible = true;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("An error occurred when decreasing the date." + Environment.NewLine + ex.Message);
+            CurrentDate = _calendar.MinSupportedDateTime;
+        }
+    }
+
+    private async Task OnIncreaseClicked()
+    {
+        try
+        {
+            _daysAreVisible = false;
+            await Task.Delay(300);
+            if (CurrentView == ViewMode.MonthView)
+                CurrentDate = _calendar.AddMonths(CurrentDate, 1);
+            else if (CurrentView == ViewMode.YearView)
+                CurrentDate = _calendar.AddYears(CurrentDate, 1);
+            else
+                CurrentDate = _calendar.AddYears(CurrentDate, DecadeViewYearsCount);
+            _daysAreVisible = true;
+        }
+        catch(Exception ex)
+        {
+            Console.Error.WriteLine("An error occurred when increasing the date." + Environment.NewLine + ex.Message);
+            CurrentDate = _calendar.MinSupportedDateTime;
+        }
+    }
+
+    private bool IsInCurrentViewPort()
+    {
+        if(CurrentView == ViewMode.MonthView)
+            return _calendar.GetYear(CurrentDate) == _calendar.GetYear(DateTime.Now) && _calendar.GetMonth(CurrentDate) == _calendar.GetMonth(DateTime.Now);
+        else if(CurrentView == ViewMode.YearView)
+            return _calendar.GetYear(CurrentDate) == _calendar.GetYear(DateTime.Now);
+        else
+        {
+            var startYear = (_calendar.GetYear(DateTime.Now) / DecadeViewYearsCount) * DecadeViewYearsCount;
+            return _calendar.GetYear(CurrentDate) >= startYear && _calendar.GetYear(CurrentDate) <= startYear + DecadeViewYearsCount;
+        }
+    }
+
+    private int GetDecadeStartYear()
+    {
+        var decadeStart = (_calendar.GetYear(CurrentDate) / DecadeViewYearsCount) * DecadeViewYearsCount;
+        if (decadeStart < _calendar.GetYear(_calendar.MinSupportedDateTime))
+            decadeStart = _calendar.GetYear(_calendar.MinSupportedDateTime);
+        else if (decadeStart + DecadeViewYearsCount > _calendar.GetYear(_calendar.MaxSupportedDateTime))
+            decadeStart = _calendar.GetYear(_calendar.MaxSupportedDateTime) - DecadeViewYearsCount;
+
+        return decadeStart;
+    }
+
+    private async Task OnTodayClicked()
+    {
+        _daysAreVisible = false;
+        await Task.Delay(300);
+        CurrentDate = DateTime.Now;
+        _daysAreVisible = true;
+    }
+}

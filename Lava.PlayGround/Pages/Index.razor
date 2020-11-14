@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using Lava.PlayGround.Data
 
 <h3><img src="/res/logo340.png" height="40" /> Lava</h3>
 <sub>
@@ -12,96 +11,115 @@
 <!-- AdroitInput -->
 <div class="row">
     <div class="col">
-        <Collapsible Header="Adroit Input">
-            <AdroitInput>
-                <PlaceHolder>
-                    It is a simple text
-                </PlaceHolder>
-            </AdroitInput>
+        <LavaCollapsible Header="LavaInput">
+            <div class="row">
+                <div class="col-4">
+                    <LavaInput>
+                        <PlaceHolder>
+                            It is a simple text
+                        </PlaceHolder>
+                    </LavaInput>
+                </div>
+                <div class="col-4">
+                    <LavaInput>
+                        <PlaceHolder>
+                            <div><i class="fas fa-user"></i> Username</div>
+                        </PlaceHolder>
+                    </LavaInput>
+                </div>
+                <div class="col-4">
+                    <LavaInput IsPassword="true">
+                        <PlaceHolder>
+                            <div><img src="/res/key.png" /> Password</div>
+                        </PlaceHolder>
+                    </LavaInput>
+                </div>
+            </div>
 
-            <AdroitInput>
-                <PlaceHolder>
-                    <div><i class="fas fa-user"></i> Username</div>
-                </PlaceHolder>
-            </AdroitInput>
-
-            <AdroitInput IsPassword="true">
-                <PlaceHolder>
-                    <div><img src="/res/key.png" /> Password</div>
-                </PlaceHolder>
-            </AdroitInput>
-
-            <AdroitInput IsPassword="false">
-                <PlaceHolder>
-                    <div><img src="/res/chat.png" /> It can be very long placeholder content with a <a href="https://github.com/AminEsmaeily/lava">hyperlink</a></div>
-                </PlaceHolder>
-            </AdroitInput>
-        </Collapsible>
+            <div class="row">
+                <div class="col">
+                    <LavaInput>
+                        <PlaceHolder>
+                            <div><img src="/res/chat.png" /> It can be very long placeholder content with a <a href="https://github.com/AminEsmaeily/lava">hyperlink</a></div>
+                        </PlaceHolder>
+                    </LavaInput>
+                </div>
+            </div>
+        </LavaCollapsible>
     </div>
 </div>
 
 <!-- DatePicker -->
 <div class="row">
     <div class="col">
-        <Collapsible Header="Date Picker">
-            <DatePicker />
-            <DatePicker />
-        </Collapsible>
-    </div>
-</div>
-
-<!-- TabControl -->
-<div class="row">
-    <div class="col">
-        <Collapsible Header="Tab Control" Expanded="false">
-            <TabControl>
-                <TabTextTemplate Context="TheTab">
-                    <i class="fa fa-folder"></i> @TheTab.Text
-                </TabTextTemplate>
-
-                <ChildContent>
-                    <Lava.TabPage Text="Tab 1">
-                        <h1>The first tab</h1>
-                    </Lava.TabPage>
-                    <Lava.TabPage Text="Tab 2">
-                        <h1>The second tab</h1>
-                    </Lava.TabPage>
-                    <Lava.TabPage Text="Tab 3">
-                        <h1>The third tab</h1>
-                    </Lava.TabPage>
-                </ChildContent>
-            </TabControl>
-        </Collapsible>
-    </div>
-</div>
-
-<!-- DataList -->
-<div class="row">
-    <div class="col">
-        <Collapsible Header="DataTable">
-            <Lava.DataTable Data="@People" />
-        </Collapsible>
-
-        @code{
-            private IEnumerable<Person> People;
-            protected override void OnInitialized()
-            {
-                base.OnInitialized();
-                People = new Person[]
-                {
-                      new Person { Salutation = "Mr", GivenName = "Bob", FamilyName = "Geldof" },
-                      new Person { Salutation = "Mrs", GivenName = "Angela", FamilyName = "Rippon" },
-                      new Person { Salutation = "Mr", GivenName = "Freddie", FamilyName = "Mercury" }
-            };
-            }
-        }
-    </div>
-</div>
-
-<div class="row">
-    <div class="col">
-        <Collapsible>
-            <h3>I am here</h3>
-        </Collapsible>
+        <LavaCollapsible Header="LavaDatePicker">
+            <div class="row">
+                <div class="col-6">
+                    <LavaDatePicker>
+                        <PlaceHolder>
+                            Select Date
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.IR">
+                        <PlaceHolder>
+                            <div><img src="/res/birthday.png" /> Shamsi Calendar</div>
+                        </PlaceHolder>
+                        <Icon>
+                            <img src="/res/calendar.png" width="24" height="24" />
+                        </Icon>
+                    </LavaDatePicker>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.SA">
+                        <PlaceHolder>
+                            Hijri Calendar (UmAlQura)
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.TR">
+                        <PlaceHolder>
+                            Turkish Calendar
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.DE">
+                        <PlaceHolder>
+                            German Calendar
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.RU">
+                        <PlaceHolder>
+                            Russian Calendar
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.JP">
+                        <PlaceHolder>
+                            Japanese Calendar (Heisei era)
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.CN">
+                        <PlaceHolder>
+                            Chinese Lunisolar Calendar
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+            </div>
+        </LavaCollapsible>
     </div>
 </div>
