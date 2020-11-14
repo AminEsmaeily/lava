@@ -1,5 +1,5 @@
 ## ![Lava](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/Lava.PlayGround/wwwroot/res/favicon.png) Lava!
-##### A ![enter image description here](https://devblogs.microsoft.com/aspnet/wp-content/uploads/sites/16/2019/04/BrandBlazor_nohalo_128x.png =16x)Blazor based component library
+##### A Blazor based component library
 ![CI](https://github.com/AminEsmaeily/lava/workflows/CI/badge.svg?branch=master)
 The Lava component library is a set of simple UI components to be used in Blazor-based views. By default, this tool is dependent on [Font Awesome 5.*](https://fontawesome.com/) and [Bootstrap 4.*](https://getbootstrap.com/), but I will remove these dependencies in the next versions.
 
@@ -32,6 +32,7 @@ This property is for setting and getting the expanded state of the LavaCollapsib
 
 #### LavaBaseInput
 ![Sample of the LavaSimpleInput](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img1.png)
+
 LavaBaseInput is a simple Text Input control that has some simple properties too. In the initial state, it doesn't have a style, because it is mainly for getting used in other components, but you can change its styles and graphical UI using CSS.
 ##### Usage
 ``` HTML
@@ -49,7 +50,9 @@ To have a Password Box, this property should be set to `true`. The default value
 This property stores the text value of the control.
 
 #### LavaInput
-![Sample of the LavaInput](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img2.png)**LavaInput** is the stylish version of the **LavaBaseInput** and comes with some additional features and properties. This component uses a floating label as its placeholder by default, but it can be hidden by the properties.
+![Sample of the LavaInput](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img2.png)
+
+**LavaInput** is the stylish version of the **LavaBaseInput** and comes with some additional features and properties. This component uses a floating label as its placeholder by default, but it can be hidden by the properties.
 ##### Usage
 Simple usage
 ``` HTML
@@ -88,9 +91,12 @@ A `RenderFragment` to represent the content as a floating placeholder.
 This property stores the text value of the control.
 
 #### LavaDatePicker
-|Default DatePicker  |Shamsi DatePicker  |
-|--|--|
-| ![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img3.png) | ![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img4.png) |
+Default DatePicker
+![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img3.png)
+
+Shamsi DatePicker
+![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img4.png)
+
 **LavaDatePicker** is a multi-locale DatePicker component that can be used to represent 5 popular calendars. The following calendars are currently supported by **LavaDatePicker**:
 
  - Gregorian (Weekends and holidays of the selected country - default United States)
