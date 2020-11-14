@@ -14,7 +14,13 @@
         <LavaCollapsible Header="LavaInput">
             <div class="row">
                 <div class="col-4">
-                    <LavaInput>
+                    <LavaBaseInput @bind-Value=@textValue/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <LavaInput @bind-Value=@textValue>
                         <PlaceHolder>
                             It is a simple text
                         </PlaceHolder>
@@ -28,7 +34,7 @@
                     </LavaInput>
                 </div>
                 <div class="col-4">
-                    <LavaInput IsPassword="true">
+                    <LavaInput IsPassword="true" @bind-Value=@textValue>
                         <PlaceHolder>
                             <div><img src="/res/key.png" /> Password</div>
                         </PlaceHolder>
@@ -38,7 +44,7 @@
 
             <div class="row">
                 <div class="col">
-                    <LavaInput>
+                    <LavaInput @bind-Value=@textValue>
                         <PlaceHolder>
                             <div><img src="/res/chat.png" /> It can be very long placeholder content with a <a href="https://github.com/AminEsmaeily/lava">hyperlink</a></div>
                         </PlaceHolder>
@@ -46,6 +52,10 @@
                 </div>
             </div>
         </LavaCollapsible>
+
+        @code{
+            private string textValue;
+        }
     </div>
 </div>
 

@@ -2,18 +2,18 @@
     <div class="collapsible card">
         <div class="collapsible-header card-header" data-toggle="collapse"
              @onclick="e => Expanded = !Expanded">
-            @if (HeaderTemplate == null)
-            {
-                <h4 class="collapsible-header-text">
-                    <i class="fa fa-caret-down @(Expanded ? "" : "collapsed") collapsible-header-caret"></i>
+            <h4 class="collapsible-header-text">
+                <i class="fa fa-caret-down @(Expanded ? "" : "collapsed") collapsible-header-caret"></i>
+                @if (HeaderTemplate == null)
+                {
                     @Header
-                </h4>
-            }
-            else
-            {
-                @HeaderTemplate
-            }
-        </div>
+                }
+                else
+                {
+                    @HeaderTemplate
+                }
+            </h4>
+            </div>
         <div class="card-body collapsible-body @(Expanded ? "" : "collapsed")">
             <div class="row">
                 <div class="col" data-animation="fade">
@@ -39,11 +39,14 @@
         get => _expanded;
         set
         {
+            if (_expanded == value)
+                return;
+
             _expanded = value;
-            OnCollapsedChanged.InvokeAsync(value);
+            ExpandedChanged.InvokeAsync(value);
         }
     }
 
     [Parameter]
-    public EventCallback<bool> OnCollapsedChanged { get; set; }
+    public EventCallback<bool> ExpandedChanged { get; set; }
 }
