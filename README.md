@@ -1,13 +1,15 @@
-## ![Lava](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/Lava.PlayGround/wwwroot/res/favicon.png) Lava!
+# ![Lava](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/Lava.PlayGround/wwwroot/res/favicon.png) Lava!
 ##### A Blazor based component library
 ![CI](https://github.com/AminEsmaeily/lava/workflows/CI/badge.svg?branch=master)
-The Lava component library is a set of simple UI components to be used in Blazor-based views. By default, this tool is dependent on [Font Awesome 5.*](https://fontawesome.com/) and [Bootstrap 4.*](https://getbootstrap.com/), but I will remove these dependencies in the next versions.
 
-### Components
+The Lava is a small set of UI components to be used in Blazor-based views. By default, this tool is dependent on [Font Awesome 5.*](https://fontawesome.com/) and [Bootstrap 4.*](https://getbootstrap.com/), but I will remove these dependencies in the next versions.
 
-#### LavaCollapsible
+## Components
+
+### LavaCollapsible
+---
 This component is a simple collapsible container that helps to show and hide parts of the application in UI.
-##### Usage
+#### Usage
 Header with a simple text
 ``` HTML
 <LavaCollapsible Header="Simple text goes here">
@@ -25,20 +27,21 @@ Header with template
     </ChildContent>
 </LavaCollapsible>
 ```
-##### Properties
+#### Properties
 
  - Expanded
 This property is for setting and getting the expanded state of the LavaCollapsible. This property is bindable and can be invoked whenever needed.
 
-#### LavaBaseInput
+### LavaBaseInput
+---
 ![Sample of the LavaSimpleInput](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img1.png)
 
 LavaBaseInput is a simple Text Input control that has some simple properties too. In the initial state, it doesn't have a style, because it is mainly for getting used in other components, but you can change its styles and graphical UI using CSS.
-##### Usage
+#### Usage
 ``` HTML
 <LavaBaseInput/>
 ```
-##### Properties
+#### Properties
 
  - HasClearButton
 This property determines the Clear Button to be shown or not. The default value of this property is `true`. 
@@ -49,11 +52,12 @@ To have a Password Box, this property should be set to `true`. The default value
  - Value
 This property stores the text value of the control.
 
-#### LavaInput
+### LavaInput
+---
 ![Sample of the LavaInput](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img2.png)
 
 **LavaInput** is the stylish version of the **LavaBaseInput** and comes with some additional features and properties. This component uses a floating label as its placeholder by default, but it can be hidden by the properties.
-##### Usage
+#### Usage
 Simple usage
 ``` HTML
 <LavaInput @bind-Value=@bindedVariable>
@@ -78,7 +82,7 @@ Composite placeholder
     </PlaceHolder>
 </LavaInput>
 ```
-##### Properties
+#### Properties
  - HasClearButton
 This property determines the Clear Button to be shown or not. The default value of this property is `true`.
  - IsFocused
@@ -90,7 +94,8 @@ A `RenderFragment` to represent the content as a floating placeholder.
  - Value
 This property stores the text value of the control.
 
-#### LavaDatePicker
+### LavaDatePicker
+---
 Default DatePicker
 ![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img3.png)
 
@@ -106,7 +111,7 @@ Shamsi DatePicker
  - Chinese (Weekends and holidays of the China - `Chinese Lunisolar Calendar`)
 
 This component uses the [Nager.Date](https://github.com/nager/Nager.Date) to show the holidays and weekends of the countries. If the country code found in the above list, the **LavaDatePicker** will show the specified calendar, else it will use the `Gregorian Calendar` with the weekends and holidays of that country.
-##### Usage
+#### Usage
 Simple usage
 ``` html
 <LavaDatePicker>
@@ -134,7 +139,7 @@ With icon and composite placeholder
 	 </Icon>
 </LavaDatePicker>
 ```
-##### Properties
+#### Properties
 
  - CloseWhenSelected
 By setting this propertes' value to `false` the DropDown stays open when the use selects a date. default `true`.
