@@ -120,13 +120,13 @@ Shamsi DatePicker
 
 **LavaDatePicker** is a multi-locale DatePicker component that can be used to represent 5 popular calendars. The following calendars are currently supported by **LavaDatePicker**:
 
- - Gregorian (Weekends and holidays of the selected country - default United States)
- - Persian (Weekends and holidays of the Iran)
- - Hijri (`UmAlQura` calendar, Weekends and holidays of the Saudi Arabia, Iraq, Qatar, Oman, United Arabic Emirates, Egypt, Morocco, and Tunisia besed on the selection)
- - Japanese (Weekends and holidays of the Japan - `Heisei era`)
- - Chinese (Weekends and holidays of the China - `Chinese Lunisolar Calendar`)
+ - Gregorian Calendar (Weekends and holidays of the selected country - default United States)
+ - Persian / Shamsi Calendar (Weekends and holidays of Iran)
+ - Hijri / UmAlQura Calendar (Weekends and holidays of the Saudi Arabia, Iraq, Qatar, Oman, United Arabic Emirates, Egypt, Morocco, and Tunisia besed on the selection)
+ - Japanese Calendar (Weekends and holidays of the Japan - `Heisei era`)
+ - Chinese Calendar (Weekends and holidays of the China - `Chinese Lunisolar Calendar`)
 
-This component uses the [Nager.Date](https://github.com/nager/Nager.Date) to show the holidays and weekends of the countries. If the country code found in the above list, the **LavaDatePicker** will show the specified calendar, else it will use the `Gregorian Calendar` with the weekends and holidays of that country.
+This component uses the [Nager.Date](https://github.com/nager/Nager.Date) to show the holidays and weekends of the countries. If the country code found in the above list, the **LavaDatePicker** will show the specified calendar, else it will use the `Gregorian Calendar` with the weekends and holidays of the selected country.
 #### Usage
 Simple usage
 ``` html
