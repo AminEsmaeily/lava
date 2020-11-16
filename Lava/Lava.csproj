@@ -6,7 +6,7 @@
     <Authors>Seyed Amin Esmaeily</Authors>
     <Company />
     <Product>Lava - Blazor component library</Product>
-    <Description>Lava is a small set of Blazor components library</Description>
+    <Description>Lava is a small Blazor components library</Description>
     <PackageProjectUrl>https://github.com/AminEsmaeily/lava</PackageProjectUrl>
     <PackageIcon>favicon.png</PackageIcon>
     <RepositoryUrl>https://github.com/AminEsmaeily/lava</RepositoryUrl>
