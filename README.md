@@ -1,8 +1,15 @@
 # ![Lava](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/Lava.PlayGround/wwwroot/res/favicon.png) Lava!
 ##### A Blazor based component library
-![CI](https://github.com/AminEsmaeily/lava/workflows/CI/badge.svg?branch=master)
+![Build and Test](https://github.com/AminEsmaeily/lava/workflows/Build%20and%20Test/badge.svg)
+![Nuget](https://img.shields.io/nuget/v/lava?style=plastic)
 
 The Lava is a small set of UI components to be used in Blazor-based views. By default, this tool is dependent on [Font Awesome 5.*](https://fontawesome.com/) and [Bootstrap 4.*](https://getbootstrap.com/), but I will remove these dependencies in the next versions.
+
+## Getting started
+To get started with the **Lava**, install the following `Nuget` package in any Blazor project you want:
+``` zsh
+PM> Install-Package Lava
+```
 
 ## Components
 
@@ -30,7 +37,8 @@ Header with template
 #### Properties
 
  - Expanded
-This property is for setting and getting the expanded state of the LavaCollapsible. This property is bindable and can be invoked whenever needed.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property is for setting and getting the expanded state of the LavaCollapsible. This property is bindable and can be invoked whenever needed.
 
 ### LavaBaseInput
 ---
@@ -44,13 +52,17 @@ LavaBaseInput is a simple Text Input control that has some simple properties too
 #### Properties
 
  - HasClearButton
-This property determines the Clear Button to be shown or not. The default value of this property is `true`. 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property determines the Clear Button to be shown or not. The default value of this property is `true`. 
 - IsFocused
-Shows the focus status of the component
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shows the focus status of the component
  - IsPassword
-To have a Password Box, this property should be set to `true`. The default value of this property is `false`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To have a Password Box, this property should be set to `true`. The default value of this property is `false`.
  - Value
-This property stores the text value of the control.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property stores the text value of the control.
 
 ### LavaInput
 ---
@@ -84,15 +96,19 @@ Composite placeholder
 ```
 #### Properties
  - HasClearButton
-This property determines the Clear Button to be shown or not. The default value of this property is `true`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property determines the Clear Button to be shown or not. The default value of this property is `true`.
  - IsFocused
 Shows the focus status of the component
  - IsPassword
-To have a Password Box, this property should be set to `true`. The default value of this property is `false`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To have a Password Box, this property should be set to `true`. The default value of this property is `false`.
  - PlaceHolder
-A `RenderFragment` to represent the content as a floating placeholder.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A `RenderFragment` to represent the content as a floating placeholder.
  - Value
-This property stores the text value of the control.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property stores the text value of the control.
 
 ### LavaDatePicker
 ---
@@ -142,18 +158,25 @@ With icon and composite placeholder
 #### Properties
 
  - CloseWhenSelected
-By setting this propertes' value to `false` the DropDown stays open when the use selects a date. default `true`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By setting this propertes' value to `false` the DropDown stays open when the use selects a date. default `true`.
  - CountryCode
-This property is to determine the country to handle the calendar type, weekends, and holidays. default `US`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property is to determine the country to handle the calendar type, weekends, and holidays. default `US`.
  - Icon
-A `RenderFragment` to demonstrate the icon of the dropdown button. The best size of the icon is 24px × 24px. default `null`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A `RenderFragment` to demonstrate the icon of the dropdown button. The best size of the icon is 24px × 24px. default `null`.
  - IsDropdownOpen
-A bindable property to control and check the dropdown state. default `false`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A bindable property to control and check the dropdown state. default `false`.
  - IsFocused
 Shows the focus status of the component. default `false`.
  - PlaceHolder
-A `RenderFragment` to demonstrate the placeholder of the DatePicker. default `null`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A `RenderFragment` to demonstrate the placeholder of the DatePicker. default `null`.
  - SelectedDate
-This property holds the user selected value. default `null`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property holds the user selected value. default `null`.
  - Value
-The string representation of the selected date. default `empty string`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The string representation of the selected date. default `empty string`.
