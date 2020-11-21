@@ -51,6 +51,10 @@ LavaBaseInput is a simple Text Input control that has some simple properties too
 ```
 #### Properties
 
+ - Enabled
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property is for determining the ability of the input. Its default value is `true`.
+
  - HasClearButton
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property determines the Clear Button to be shown or not. The default value of this property is `true`. 
@@ -60,6 +64,11 @@ LavaBaseInput is a simple Text Input control that has some simple properties too
  - IsPassword
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To have a Password Box, this property should be set to `true`. The default value of this property is `false`.
+
+ - ReadOnly
+  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To protect an anabled input from the user change, this property can be set to `true`. Its default value is `false`.
+
  - Value
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property stores the text value of the control.
@@ -95,6 +104,11 @@ Composite placeholder
 </LavaInput>
 ```
 #### Properties
+
+ - Enabled
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property is for determining the ability of the input. Its default value is `true`.
+
  - HasClearButton
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property determines the Clear Button to be shown or not. The default value of this property is `true`.
@@ -106,6 +120,11 @@ Shows the focus status of the component
  - PlaceHolder
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A `RenderFragment` to represent the content as a floating placeholder.
+
+ - ReadOnly
+  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To protect an anabled input from the user change, this property can be set to `true`. Its default value is `false`.
+
  - Value
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property stores the text value of the control.
@@ -163,6 +182,11 @@ With icon and composite placeholder
  - CountryCode
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property is to determine the country to handle the calendar type, weekends, and holidays. default `US`.
+
+ - Enabled
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property is for determining the ability of the input. Its default value is `true`.
+
  - Icon
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A `RenderFragment` to demonstrate the icon of the dropdown button. The best size of the icon is 24px × 24px. default `null`.
@@ -174,6 +198,11 @@ Shows the focus status of the component. default `false`.
  - PlaceHolder
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A `RenderFragment` to demonstrate the placeholder of the DatePicker. default `null`.
+
+ - ReadOnly
+  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To protect an anabled input from the user change, this property can be set to `true`. Its default value is `false`.
+
  - SelectedDate
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This property holds the user selected value. default `null`.
