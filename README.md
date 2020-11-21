@@ -1,7 +1,7 @@
-# ![Lava](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/Lava.PlayGround/wwwroot/res/favicon.png) Lava!
+# ![Lava](https://raw.githubusercontent.com/AminEsmaeily/lava/master/Lava.PlayGround/wwwroot/res/favicon.png) Lava!
 ##### A Blazor based component library
 ![Build and Test](https://github.com/AminEsmaeily/lava/workflows/Build%20and%20Test/badge.svg)
-![Nuget](https://img.shields.io/nuget/v/lava?style=plastic)
+![Nuget](https://badgen.net/nuget/v/lava/latest?icon=nuget)
 
 The Lava is a small set of UI components to be used in Blazor-based views. By default, this tool is dependent on [Font Awesome 5.*](https://fontawesome.com/) and [Bootstrap 4.*](https://getbootstrap.com/), but I will remove these dependencies in the next versions.
 
@@ -42,7 +42,7 @@ Header with template
 
 ### LavaBaseInput
 ---
-![Sample of the LavaSimpleInput](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img1.png)
+![Sample of the LavaSimpleInput](https://raw.githubusercontent.com/AminEsmaeily/lava/master/files/img1.png)
 
 LavaBaseInput is a simple Text Input control that has some simple properties too. In the initial state, it doesn't have a style, because it is mainly for getting used in other components, but you can change its styles and graphical UI using CSS.
 #### Usage
@@ -66,7 +66,7 @@ LavaBaseInput is a simple Text Input control that has some simple properties too
 
 ### LavaInput
 ---
-![Sample of the LavaInput](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img2.png)
+![Sample of the LavaInput](https://raw.githubusercontent.com/AminEsmaeily/lava/master/files/img2.png)
 
 **LavaInput** is the stylish version of the **LavaBaseInput** and comes with some additional features and properties. This component uses a floating label as its placeholder by default, but it can be hidden by the properties.
 #### Usage
@@ -113,10 +113,10 @@ Shows the focus status of the component
 ### LavaDatePicker
 ---
 Default DatePicker
-![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img3.png)
+![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/master/files/img3.png)
 
 Shamsi DatePicker
-![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/add-readme/files/img4.png)
+![enter image description here](https://raw.githubusercontent.com/AminEsmaeily/lava/master/files/img4.png)
 
 **LavaDatePicker** is a multi-locale DatePicker component that can be used to represent 5 popular calendars. The following calendars are currently supported by **LavaDatePicker**:
 
