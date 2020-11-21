@@ -6,9 +6,11 @@
            type="@(IsPassword ? "password" : "text")"
            @bind-value=Value @bind-value:event="oninput"
            @onfocusin=@(() => ChangeFocus(true))
-           @onfocusout=@(() => ChangeFocus(false)) />
+           @onfocusout=@(() => ChangeFocus(false))
+           readonly="@ReadOnly"
+           disabled="@(!Enabled)"/>
 
-    @if (HasClearButton)
+    @if (HasClearButton && !ReadOnly && Enabled)
     {
         <span class="@(string.IsNullOrEmpty(Value) ? "" : "active")"
               @onclick=ClearButtonClicked>✖</span>

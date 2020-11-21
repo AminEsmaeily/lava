@@ -14,7 +14,13 @@
         <LavaCollapsible Header="LavaInput">
             <div class="row">
                 <div class="col-4">
-                    <LavaBaseInput @bind-Value=@textValue/>
+                    <LavaBaseInput @bind-Value=@textValue />
+                </div>
+                <div class="col-4">
+                    <LavaBaseInput @bind-Value=@textValue ReadOnly="true" />
+                </div>
+                <div class="col-4">
+                    <LavaBaseInput @bind-Value=@textValue Enabled="false" />
                 </div>
             </div>
 
@@ -37,6 +43,23 @@
                     <LavaInput IsPassword="true" @bind-Value=@textValue>
                         <PlaceHolder>
                             <div><img src="/res/key.png" /> Password</div>
+                        </PlaceHolder>
+                    </LavaInput>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <LavaInput @bind-Value=@textValue ReadOnly="true">
+                        <PlaceHolder>
+                            ReadOnly Input
+                        </PlaceHolder>
+                    </LavaInput>
+                </div>
+                <div class="col-6">
+                    <LavaInput Enabled="false">
+                        <PlaceHolder>
+                            Disabled Input
                         </PlaceHolder>
                     </LavaInput>
                 </div>
@@ -126,6 +149,22 @@
                     <LavaDatePicker CountryCode="Nager.Date.CountryCode.CN">
                         <PlaceHolder>
                             Chinese Lunisolar Calendar
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.NL" Enabled="false">
+                        <PlaceHolder>
+                            Disabled DatePicker (Netherlands)
+                        </PlaceHolder>
+                    </LavaDatePicker>
+                </div>
+                <div class="col-6">
+                    <LavaDatePicker CountryCode="Nager.Date.CountryCode.NG" ReadOnly="true">
+                        <PlaceHolder>
+                            Readonly DatePicker (Nigeria)
                         </PlaceHolder>
                     </LavaDatePicker>
                 </div>

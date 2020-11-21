@@ -6,10 +6,18 @@
      aria-haspopup="true" aria-expanded="false">
     <Lava.LavaBaseInput @bind-IsFocused=IsFocused
                         @bind-Value=Value
+                        @bind-Enabled=Enabled
+                        @bind-ReadOnly=ReadOnly
                         IsPassword=false
                         HasClearButton=true/>
-    <div class="popup-btn clickable @(IsDropdownOpen ? "focused" : "")"
-         @onclick=@(() => { IsDropdownOpen = !IsDropdownOpen; })>
+    <div class="popup-btn @(Enabled ? "clickable" : "") @(IsDropdownOpen ? "focused" : "")"
+         @onclick=@(() =>
+                    {
+                        if (Enabled)
+                            IsDropdownOpen = !IsDropdownOpen;
+                        else
+                            IsDropdownOpen = false;
+                    })>
         @if (Icon == null)
         {
             <i class="fas fa-calendar-alt"></i>
@@ -27,7 +35,7 @@
         </div>
     }
 
-    <div class="dropdown-menu @(IsDropdownOpen ? "show" : "")">
+    <div class="dropdown-menu @(IsDropdownOpen && Enabled ? "show" : "")">
         <div class="lava-date-picker-header">
             <div class="clickable lava-date-picker-prev-month @(_canGoPrevious ? "" : "disabled")" @onclick="OnDecreaseClicked">◄</div>
             <div class="clickable lava-date-picker-today @(IsInCurrentViewPort() ? "hidden" : "")"
@@ -102,10 +110,10 @@
                     @for (var i = 0; i < 7; i++)
                     {
                         DateTime currentDate = startDate;
-                        <div class="clickable lava-date-picker-block
+                        <div class="lava-date-picker-block @(Enabled && !ReadOnly ? "clickable" : "")
                                 @(startDate.Date == SelectedDate?.Date ? "active" : "")
                                 @(_daysAreVisible ? "" : "blured")"
-                                @onclick=@(() => { DateSelected(currentDate); })>
+                                @onclick=@(() => DateSelected(currentDate) )>
                             <div class="lava-date-picker-day @(_calendar.GetMonth(startDate) != currentMonth ? "lava-date-picker-other" : "")
                                     @(startDate.Date == DateTime.Now.Date ? "today" : "")
                                     @(startDate.IsWeekend(_countryCode) || _holidays.Any(f => f.Date == startDate.Date) ? "holiday" : "")">
@@ -348,6 +356,9 @@
 
     private void DateSelected(DateTime date)
     {
+        if (!Enabled || ReadOnly)
+            return;
+
         SelectedDate = date;
         if (CloseWhenSelected)
             IsDropdownOpen = false;

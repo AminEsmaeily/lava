@@ -26,5 +26,40 @@ namespace Lava
         {
             // This part could be overridden in child classes
         }
+
+        private bool _enabled = true;
+        [Parameter]
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                if (_enabled == value)
+                    return;
+                _enabled = value;
+                EnabledChanged.InvokeAsync(value);
+            }
+        }
+
+        [Parameter]
+        public EventCallback<bool> EnabledChanged { get; set; }
+
+        private bool _readOnly = false;
+        [Parameter]
+        public bool ReadOnly
+        {
+            get => _readOnly;
+            set
+            {
+                if (value == _readOnly)
+                    return;
+
+                _readOnly = value;
+                ReadOnlyChanged.InvokeAsync(value);
+            }
+        }
+
+        [Parameter]
+        public EventCallback<bool> ReadOnlyChanged { get; set; }
     }
 }
